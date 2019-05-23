@@ -55,6 +55,7 @@ class UI {
   static displayMenu() {
     const pizzas = Stored.getPizza(); // Load Pizza Array
     pizzas.forEach(pizza => UI.addMenu(pizza)); // Load all dishes from array
+    Stored.ordered();
   }
 
   static addMenu(pizza) {
@@ -104,12 +105,20 @@ class Stored {
 
   static ordered() {
     const amountOfPizza = document.querySelectorAll(".amount");
-    const array = [];
-    amountOfPizza.forEach(order => console.log(order, order.innerText));
+    amountOfPizza.forEach(function(order) {
+      let xD = Array.from(order.innerText);
+      console.table(xD);
+      console.log(order);
+    });
+    // order.innerText zwraca mi string "0"
+    // powyżej 10 tworzy dwie tablice, do których liczba
+    // dziesiątek należy do indexOf 0 a jedności 1
+    // trzeba je jakoś połączyć by tworzyły jeden string
   }
 }
 
 document.addEventListener("DOMContentLoaded", UI.displayMenu);
+document.addEventListener("click", Stored.ordered);
 document.querySelector(".menu--list").addEventListener("click", e => {
   if (e.target.tagName == "BUTTON") {
     UI.addAmount(e.target);
