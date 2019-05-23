@@ -1,0 +1,43 @@
+.services
+    width: 100%
+    padding: 0 40px 40px 40px
+
+    .row
+        width: 100%
+        min-height: 480px
+        background: white
+        display: inline-flex
+        justify-content: space-around
+        margin: auto
+        .stage
+            img
+
+                width: 380px
+                height: auto
+            h2
+                width: 380px
+                text-align: center
+                padding-top: 30px
+                line-height: 36px
+   
+    @include mediumScreen
+        .row
+            width: 100%
+            display: flex
+            flex-direction: column
+            justify-content: center
+            margin: auto
+            .stage
+                display: flex
+                justify-content: center
+                flex-direction: column
+                align-items: center
+
+                img
+                    width: 720px
+                    height: auto
+
+                h2
+                    text-align: center
+                    width: 80%
+                    padding: 30px

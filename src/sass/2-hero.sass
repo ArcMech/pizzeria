@@ -1,0 +1,49 @@
+.hero
+  width: 100%
+  box-sizing: border-box
+
+  .parallax
+    min-height: 700px
+    width: auto
+    background-attachment: fixed
+    background-position: center
+    background-repeat: no-repeat
+    background-size: cover
+    padding-top: calc(668px/2)
+    
+    h1
+      color: white
+      text-align: center
+
+      
+
+  .hero--belt
+    min-height: 230px
+    background: $primary
+    width: 100%
+    margin-top: -15px
+    padding: 60px
+    display: inline-flex
+    justify-content: space-around
+    font-size: 24px
+    text-transform: uppercase
+    text-align: center
+    
+    p
+      margin: auto
+      padding: 10px
+      display: inline-flex
+      justify-content: space-around
+      font-size: 24px
+      text-align: center
+
+  @include mediumScreen
+    .hero--belt
+      display: flex
+      justify-content: center
+      align-items: center
+      flex-direction: column
+      text-align: left
+      .column
+        margin: auto
+      

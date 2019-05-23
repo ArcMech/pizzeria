@@ -1,0 +1,122 @@
+.menu
+    padding: 40px
+    background: black
+    .menu--title
+        color: white
+        display: inline
+        text-align: center
+        
+        h1
+            padding-bottom: 30px
+
+
+    .menu--list
+        background: black
+        list-style: none
+        text-decoration: none
+        
+        li
+            background: $primary
+
+            width: 100%
+            min-height: 4rem
+            align-items: center
+            margin-bottom: 10px
+            padding: 12px
+
+        .dish
+            display: grid
+            grid-template-columns: 0.3fr 1.0fr 0.1fr 0.1fr 0.1fr 0.1fr 
+            grid-template-rows: 2fr 
+            grid-template-areas: "name ingredients price add amount substract"
+            .name
+                grid-area: name
+                font-size: 1em
+                padding-right: 1em
+            .ingredients
+                grid-area: ingredients
+                justify-content: flex-start
+                text-align: left
+                font-size: 0.8em
+
+            .price
+                grid-area: price
+                font-size: 1em
+                padding: 0 1em
+                
+
+
+            button
+                height: 30px
+                font-size: 20px
+                border: 1px solid black
+            .add
+                grid-area: add
+
+            .amount
+                grid-area: amount
+            .substract
+                grid-area: substract
+
+    img
+        width: 50%
+        margin-top: 40px
+        display: flex
+        justify-content: center
+        margin: auto
+            
+    @include phone
+        .menu--list
+            background: black
+            list-style: none
+            text-decoration: none
+            
+            li
+                background: $primary
+
+                width: 100%
+                min-height: 4rem
+                align-items: center
+                margin-bottom: 10px
+                padding: 12px
+
+            .dish
+                display: grid
+                grid-template-columns: 0.3fr 1.0fr 0.1fr 0.1fr 0.1fr 0.1fr 
+                grid-template-rows: 2fr 
+                grid-template-areas: "name ingredients price add amount substract"
+                .name
+                    grid-area: name
+                    font-size: 1rem
+                    padding-right: 0.5rem
+                .ingredients
+                    grid-area: ingredients
+                    justify-content: flex-start
+                    text-align: left
+                    font-size: 0.9rem
+
+                .price
+                    grid-area: price
+                    font-size: 1rem
+                    padding: 0 1rem
+                    
+
+
+                button
+                    height: 40px
+                    width: 40px
+                    font-size: 20px
+                    border: 1px solid black
+
+                .add
+                    grid-area: add
+
+                .amount
+                    grid-area: amount
+                .substract
+                    grid-area: substract
+
+        img
+            width: 50%
+            margin-top: 40px
+
