@@ -11,14 +11,14 @@ class Pizza {
 const Pizzas = [
   {
     name: "Margarita",
-    amount: 0,
+    amount: "1",
     prize: 24.99,
     ingredients: "basil, tomato saunce, cheese, mushroom",
     id: 0
   },
   {
     name: "Italiana",
-    amount: 0,
+    amount: "1",
     prize: 24.99,
     ingredients:
       "basil, tomato saunce, cheese, mushroom, basil, tomato saunce, cheese",
@@ -26,14 +26,14 @@ const Pizzas = [
   },
   {
     name: "Napoleoni",
-    amount: 0,
+    amount: "0",
     prize: 29.99,
     ingredients: "basil, oregano, tomato, tomato saunce, cheese, mushroom",
     id: 2
   },
   {
     name: "4 Cheeses",
-    amount: 0,
+    amount: "1",
     prize: 26.99,
     ingredients:
       "cheese, ementaler, gouda, tomato saunce, cheese, mushroom, basil, tomato saunce, cheese, mushroom",
@@ -41,7 +41,7 @@ const Pizzas = [
   },
   {
     name: "Chineese",
-    amount: 0,
+    amount: "0",
     prize: 34.99,
     ingredients:
       "fish, oregano, tomato, garlic saunce, chicken, mushroom, basil, tomato, saunce, cheese, shitake",
@@ -55,7 +55,10 @@ class UI {
   static displayMenu() {
     const pizzas = Stored.getPizza(); // Load Pizza Array
     pizzas.forEach(pizza => UI.addMenu(pizza)); // Load all dishes from array
-    Stored.ordered();
+    Stored.ordered(); //Load and update quantity of Pizza
+    UI.updateCard();
+    Stored.getPrize();
+    //UI.shopCard(pizza)
   }
 
   static addMenu(pizza) {
@@ -66,10 +69,33 @@ class UI {
         <div class="ingredients">Ingredients: ${pizza.ingredients}</div>
         <div class="price">${pizza.prize}$</div>
         <button class="add">+</button>
-        <span class="amount" id = "amount ${pizza.id}">${pizza.amount}</span>
+        <span class="amount" id = "amount${pizza.id}">${pizza.amount}</span>
         <button class="substract">-</button>`;
 
     dishParent.appendChild(dish);
+  }
+
+  static shopCard(pizza) {
+    const shopCard = document.querySelector(".dropdownBackground");
+    const shopItem = document.createElement("li");
+    shopItem.classList = "open";
+    shopItem.classList = "bag";
+    shopItem.innerHTML = `
+    <div class="name bold">${pizza.name}</div>
+    <div class="price">${pizza.prize}$</div>
+    <span class="order--amount" id = "">${pizza.amount}</span>
+    <button class="delete">X</button>
+    `;
+    shopCard.appendChild(shopItem);
+  }
+
+  static updateCard() {
+    const pizzas = Stored.getPizza();
+    pizzas.forEach(pizza => {
+      if (pizza.amount > 0) {
+        UI.shopCard(pizza);
+      }
+    });
   }
 
   static addAmount(el) {
@@ -104,25 +130,46 @@ class Stored {
   }
 
   static ordered() {
-    const amountOfPizza = document.querySelectorAll(".amount");
-    amountOfPizza.forEach(function(order) {
-      let xD = Array.from(order.innerText);
-      console.table(xD);
-      console.log(order);
+    const values = document.querySelectorAll(".amount");
+    const array = [];
+    for (let i = 0; i < values.length; i++) {
+      let v = document.getElementById(`amount${i}`);
+      let value = v.innerText;
+      array.push(value);
+      Pizzas[i].amount = array[i];
+    }
+  }
+
+  static getPrize(pizza) {
+    let prize = [];
+    let prizeItem;
+    let reducedPrize;
+    const shopCard = document.querySelector(".dropdownBackground");
+    const shopItem = document.createElement("li");
+    shopItem.classList = "open";
+    shopItem.classList = "bag";
+
+    const pizzas = Stored.getPizza();
+    pizzas.forEach(pizza => {
+      prizeItem = pizza.amount * pizza.prize;
+      prize.push(prizeItem);
+
+      reducedPrize = prize.reduce(function(a, b) {
+        return a + b;
+      });
     });
-    // order.innerText zwraca mi string "0"
-    // powyżej 10 tworzy dwie tablice, do których liczba
-    // dziesiątek należy do indexOf 0 a jedności 1
-    // trzeba je jakoś połączyć by tworzyły jeden string
+    shopItem.innerText = `Prize: ${reducedPrize}$`;
+    shopCard.appendChild(shopItem);
   }
 }
 
 document.addEventListener("DOMContentLoaded", UI.displayMenu);
 document.addEventListener("click", Stored.ordered);
+document.addEventListener("unload", UI.updateCard);
 document.querySelector(".menu--list").addEventListener("click", e => {
   if (e.target.tagName == "BUTTON") {
     UI.addAmount(e.target);
   } else {
-    console.log(e.target.tagName);
+    return 0;
   }
 });

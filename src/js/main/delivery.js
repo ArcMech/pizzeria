@@ -17,7 +17,6 @@ function handleEnter() {
 }
 
 function handleLeave() {
-  // console.log('LEAVE!');
   this.classList.remove("trigger-enter", "trigger-enter-active");
   background.classList.remove("open");
   background.style.display = "none";
