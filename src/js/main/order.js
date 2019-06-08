@@ -204,7 +204,6 @@ document.addEventListener("click", function() {
   Stored.ordered();
   UI.updateCard();
 });
-//document.addEventListener("click", UI.updateCard);
 document.querySelector(".menu--list").addEventListener("click", e => {
   if (e.target.tagName == "BUTTON") {
     UI.addAmount(e.target);
