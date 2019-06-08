@@ -22,7 +22,7 @@ function handleLeave() {
   background.style.display = "none";
 }
 
-list.forEach(trigger => trigger.addEventListener("click", handleEnter));
+list.forEach(trigger => trigger.addEventListener("mouseover", handleEnter));
 
 triggers.forEach(trigger =>
   trigger.addEventListener("mouseleave", handleLeave)

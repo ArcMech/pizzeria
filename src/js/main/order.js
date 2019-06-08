@@ -11,14 +11,14 @@ class Pizza {
 const Pizzas = [
   {
     name: "Margarita",
-    amount: "1",
+    amount: "0",
     prize: 24.99,
     ingredients: "basil, tomato saunce, cheese, mushroom",
     id: 0
   },
   {
     name: "Italiana",
-    amount: "1",
+    amount: "0",
     prize: 24.99,
     ingredients:
       "basil, tomato saunce, cheese, mushroom, basil, tomato saunce, cheese",
@@ -33,7 +33,7 @@ const Pizzas = [
   },
   {
     name: "4 Cheeses",
-    amount: "1",
+    amount: "0",
     prize: 26.99,
     ingredients:
       "cheese, ementaler, gouda, tomato saunce, cheese, mushroom, basil, tomato saunce, cheese, mushroom",
@@ -56,11 +56,12 @@ class UI {
     const pizzas = Stored.getPizza(); // Load Pizza Array
     pizzas.forEach(pizza => UI.addMenu(pizza)); // Load all dishes from array
     Stored.ordered(); //Load and update quantity of Pizza
-    UI.updateCard();
-    Stored.getPrize();
-    //UI.shopCard(pizza)
-  }
 
+    UI.createCard();
+    UI.deleteCard();
+    Stored.getPrize();
+  }
+  // Create Menu from all dishes
   static addMenu(pizza) {
     const dishParent = document.querySelector(".menu--list");
     const dish = document.createElement("li");
@@ -75,27 +76,55 @@ class UI {
     dishParent.appendChild(dish);
   }
 
+  // Create DOM for Shop nav
   static shopCard(pizza) {
     const shopCard = document.querySelector(".dropdownBackground");
     const shopItem = document.createElement("li");
     shopItem.classList = "open";
-    shopItem.classList = "bag";
+    shopItem.classList = `bag${pizza.id}`;
     shopItem.innerHTML = `
     <div class="name bold">${pizza.name}</div>
     <div class="price">${pizza.prize}$</div>
-    <span class="order--amount" id = "">${pizza.amount}</span>
-    <button class="delete">X</button>
+    <span class="order--amount" id = "order--amount${pizza.id}">${
+      pizza.amount
+    }</span>
+    <button class="delete delete${pizza.id}">X</button>
     `;
     shopCard.appendChild(shopItem);
   }
 
-  static updateCard() {
+  static createCard() {
     const pizzas = Stored.getPizza();
+
     pizzas.forEach(pizza => {
-      if (pizza.amount > 0) {
+      if (pizza.amount) {
         UI.shopCard(pizza);
       }
     });
+  }
+
+  static updateCard() {
+    const pizzas = Stored.getPizza();
+    const quantities = document.querySelectorAll(".order--amount");
+
+    for (let i = 0; i < quantities.length; i++) {
+      if (quantities[i].innerText !== pizzas[i].amount && !null) {
+        quantities[i].innerText = pizzas[i].amount;
+      } else {
+        continue;
+      }
+    }
+  }
+
+  static deleteCard(e) {
+    const deleteButton = document.querySelectorAll(".delete");
+    deleteButton.forEach((e, index) => {
+      console.log(e.parentElement, index);
+    });
+  }
+
+  static removeElement(x, index) {
+    const parent = document.querySelector(".dropdownBackground");
   }
 
   static addAmount(el) {
@@ -131,6 +160,7 @@ class Stored {
 
   static ordered() {
     const values = document.querySelectorAll(".amount");
+
     const array = [];
     for (let i = 0; i < values.length; i++) {
       let v = document.getElementById(`amount${i}`);
@@ -140,6 +170,7 @@ class Stored {
     }
   }
 
+  // Sums prize, if shopcard is empty - return information
   static getPrize(pizza) {
     let prize = [];
     let prizeItem;
@@ -158,14 +189,22 @@ class Stored {
         return a + b;
       });
     });
-    shopItem.innerText = `Prize: ${reducedPrize}$`;
+    if (reducedPrize > 0) {
+      shopItem.innerText = `Prize: ${reducedPrize}$`;
+    } else {
+      shopItem.innerText = "Mr Pizza is sad. Order pizza";
+    }
     shopCard.appendChild(shopItem);
+    return reducedPrize;
   }
 }
 
 document.addEventListener("DOMContentLoaded", UI.displayMenu);
-document.addEventListener("click", Stored.ordered);
-document.addEventListener("unload", UI.updateCard);
+document.addEventListener("click", function() {
+  Stored.ordered();
+  UI.updateCard();
+});
+//document.addEventListener("click", UI.updateCard);
 document.querySelector(".menu--list").addEventListener("click", e => {
   if (e.target.tagName == "BUTTON") {
     UI.addAmount(e.target);
