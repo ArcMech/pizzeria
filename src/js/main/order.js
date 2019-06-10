@@ -1,8 +1,8 @@
 class Pizza {
-  constructor(name, amount, prize, ingredients, id) {
+  constructor(name, amount, price, ingredients, id) {
     this.name = name;
     this.amount = amount;
-    this.prize = prize;
+    this.price = price;
     this.ingredients = ingredients;
     this.id = id;
   }
@@ -12,14 +12,14 @@ const Pizzas = [
   {
     name: "Margarita",
     amount: "0",
-    prize: 24.99,
+    price: 24.99,
     ingredients: "basil, tomato saunce, cheese, mushroom",
     id: 0
   },
   {
     name: "Italiana",
     amount: "0",
-    prize: 24.99,
+    price: 24.99,
     ingredients:
       "basil, tomato saunce, cheese, mushroom, basil, tomato saunce, cheese",
     id: 1
@@ -27,14 +27,14 @@ const Pizzas = [
   {
     name: "Napoleoni",
     amount: "0",
-    prize: 29.99,
+    price: 29.99,
     ingredients: "basil, oregano, tomato, tomato saunce, cheese, mushroom",
     id: 2
   },
   {
     name: "4 Cheeses",
     amount: "0",
-    prize: 26.99,
+    price: 26.99,
     ingredients:
       "cheese, ementaler, gouda, tomato saunce, cheese, mushroom, basil, tomato saunce, cheese, mushroom",
     id: 3
@@ -42,7 +42,7 @@ const Pizzas = [
   {
     name: "Chineese",
     amount: "0",
-    prize: 34.99,
+    price: 34.99,
     ingredients:
       "fish, oregano, tomato, garlic saunce, chicken, mushroom, basil, tomato, saunce, cheese, shitake",
     id: 4
@@ -58,8 +58,8 @@ class UI {
     Stored.ordered(); //Load and update quantity of Pizza
 
     UI.createCard();
-    UI.deleteCard();
-    Stored.getPrize();
+    UI.createPrice(); //Load DOM element for price
+    Stored.getPrice();
   }
   // Create Menu from all dishes
   static addMenu(pizza) {
@@ -68,7 +68,7 @@ class UI {
     dish.classList = "dish";
     dish.innerHTML = `<div class="name bold">${pizza.name}</div>
         <div class="ingredients">Ingredients: ${pizza.ingredients}</div>
-        <div class="price">${pizza.prize}$</div>
+        <div class="price">${pizza.price}$</div>
         <button class="add">+</button>
         <span class="amount" id = "amount${pizza.id}">${pizza.amount}</span>
         <button class="substract">-</button>`;
@@ -84,7 +84,7 @@ class UI {
     shopItem.classList = `bag${pizza.id}`;
     shopItem.innerHTML = `
     <div class="name bold">${pizza.name}</div>
-    <div class="price">${pizza.prize}$</div>
+    <div class="price">${pizza.price}$</div>
     <span class="order--amount" id = "order--amount${pizza.id}">${
       pizza.amount
     }</span>
@@ -116,17 +116,6 @@ class UI {
     }
   }
 
-  static deleteCard(e) {
-    const deleteButton = document.querySelectorAll(".delete");
-    deleteButton.forEach((e, index) => {
-      console.log(e.parentElement, index);
-    });
-  }
-
-  static removeElement(x, index) {
-    const parent = document.querySelector(".dropdownBackground");
-  }
-
   static addAmount(el) {
     let amountElement, adjustAmount;
 
@@ -143,6 +132,24 @@ class UI {
         parseInt(amountElement.innerText) + adjustAmount;
     } else {
       amountElement.innerText = 0;
+    }
+  }
+  static createPrice() {
+    const shopCard = document.querySelector(".dropdownBackground");
+    const priceItem = document.createElement("li");
+    priceItem.classList = "priceItem";
+    shopCard.appendChild(priceItem);
+  }
+  static showPrice() {
+    let price, roundedPrice;
+    const priceItem = document.querySelector(".priceItem");
+    price = Stored.getPrice();
+    roundedPrice = Stored.roundPrice(price, 2);
+
+    if (price > 0) {
+      priceItem.innerText = `Price: ${roundedPrice}`;
+    } else {
+      priceItem.innerText = "Mr Pizza is sad. Order pizza";
     }
   }
 }
@@ -169,33 +176,27 @@ class Stored {
       Pizzas[i].amount = array[i];
     }
   }
-
-  // Sums prize, if shopcard is empty - return information
-  static getPrize(pizza) {
-    let prize = [];
-    let prizeItem;
-    let reducedPrize;
-    const shopCard = document.querySelector(".dropdownBackground");
-    const shopItem = document.createElement("li");
-    shopItem.classList = "open";
-    shopItem.classList = "bag";
+  // Sums price
+  static getPrice() {
+    let price = [];
+    let priceItem;
+    let reducedPrice;
 
     const pizzas = Stored.getPizza();
     pizzas.forEach(pizza => {
-      prizeItem = pizza.amount * pizza.prize;
-      prize.push(prizeItem);
+      priceItem = pizza.amount * pizza.price;
+      price.push(priceItem);
 
-      reducedPrize = prize.reduce(function(a, b) {
+      reducedPrice = price.reduce(function(a, b) {
         return a + b;
       });
     });
-    if (reducedPrize > 0) {
-      shopItem.innerText = `Prize: ${reducedPrize}$`;
-    } else {
-      shopItem.innerText = "Mr Pizza is sad. Order pizza";
-    }
-    shopCard.appendChild(shopItem);
-    return reducedPrize;
+    return reducedPrice;
+  }
+  // Unfortunately getPrice returns costs with long decimal number
+  static roundPrice(price, decimals) {
+    let cost = Math.pow(10, decimals);
+    return Math.round(price * cost) / cost;
   }
 }
 
@@ -203,8 +204,9 @@ document.addEventListener("DOMContentLoaded", UI.displayMenu);
 document.addEventListener("click", function() {
   Stored.ordered();
   UI.updateCard();
+  Stored.getPrice();
+  UI.showPrice();
 });
-//document.addEventListener("click", UI.updateCard);
 document.querySelector(".menu--list").addEventListener("click", e => {
   if (e.target.tagName == "BUTTON") {
     UI.addAmount(e.target);
