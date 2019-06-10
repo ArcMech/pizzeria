@@ -58,7 +58,8 @@ class UI {
     Stored.ordered(); //Load and update quantity of Pizza
 
     UI.createCard();
-    Stored.getprice();
+    UI.createPrice(); //Load DOM element for price
+    Stored.getPrice();
   }
   // Create Menu from all dishes
   static addMenu(pizza) {
@@ -133,20 +134,22 @@ class UI {
       amountElement.innerText = 0;
     }
   }
-  static showprice() {
-    let price;
+  static createPrice() {
     const shopCard = document.querySelector(".dropdownBackground");
-    const shopItem = document.createElement("li");
-    price = Stored.getprice();
-    shopItem.innerText = "Mr Pizza is sad. Order pizza";
+    const priceItem = document.createElement("li");
+    priceItem.classList = "priceItem";
+    shopCard.appendChild(priceItem);
+  }
+  static showPrice() {
+    let price;
+    const priceItem = document.querySelector(".priceItem");
+    price = Stored.getPrice();
 
     if (price > 0) {
-      shopItem.innerText = "";
-      shopItem.innerText = `price: ${price}`;
+      priceItem.innerText = `Price: ${price}`;
     } else {
-      shopItem.innerText = "Mr Pizza is sad. Order pizza";
+      priceItem.innerText = "Mr Pizza is sad. Order pizza";
     }
-    shopCard.appendChild(shopItem);
   }
 }
 
@@ -172,22 +175,22 @@ class Stored {
       Pizzas[i].amount = array[i];
     }
   }
-  // Sums price, if shopcard is empty - return information
-  static getprice() {
+  // Sums price
+  static getPrice() {
     let price = [];
     let priceItem;
-    let reducedprice;
+    let reducedPrice;
 
     const pizzas = Stored.getPizza();
     pizzas.forEach(pizza => {
       priceItem = pizza.amount * pizza.price;
       price.push(priceItem);
 
-      reducedprice = price.reduce(function(a, b) {
+      reducedPrice = price.reduce(function(a, b) {
         return a + b;
       });
     });
-    return reducedprice;
+    return reducedPrice;
   }
 }
 
@@ -195,8 +198,8 @@ document.addEventListener("DOMContentLoaded", UI.displayMenu);
 document.addEventListener("click", function() {
   Stored.ordered();
   UI.updateCard();
-  Stored.getprice();
-  UI.showprice();
+  Stored.getPrice();
+  UI.showPrice();
 });
 document.querySelector(".menu--list").addEventListener("click", e => {
   if (e.target.tagName == "BUTTON") {
