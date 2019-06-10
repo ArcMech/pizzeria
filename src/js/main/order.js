@@ -141,12 +141,13 @@ class UI {
     shopCard.appendChild(priceItem);
   }
   static showPrice() {
-    let price;
+    let price, roundedPrice;
     const priceItem = document.querySelector(".priceItem");
     price = Stored.getPrice();
+    roundedPrice = Stored.roundPrice(price, 2);
 
     if (price > 0) {
-      priceItem.innerText = `Price: ${price}`;
+      priceItem.innerText = `Price: ${roundedPrice}`;
     } else {
       priceItem.innerText = "Mr Pizza is sad. Order pizza";
     }
@@ -191,6 +192,11 @@ class Stored {
       });
     });
     return reducedPrice;
+  }
+  // Unfortunately getPrice returns costs with long decimal number
+  static roundPrice(price, decimals) {
+    let cost = Math.pow(10, decimals);
+    return Math.round(price * cost) / cost;
   }
 }
 
