@@ -58,7 +58,6 @@ class UI {
     Stored.ordered(); //Load and update quantity of Pizza
 
     UI.createCard();
-    UI.deleteCard();
     Stored.getPrize();
   }
   // Create Menu from all dishes
@@ -116,17 +115,6 @@ class UI {
     }
   }
 
-  static deleteCard(e) {
-    const deleteButton = document.querySelectorAll(".delete");
-    deleteButton.forEach((e, index) => {
-      console.log(e.parentElement, index);
-    });
-  }
-
-  static removeElement(x, index) {
-    const parent = document.querySelector(".dropdownBackground");
-  }
-
   static addAmount(el) {
     let amountElement, adjustAmount;
 
@@ -144,6 +132,21 @@ class UI {
     } else {
       amountElement.innerText = 0;
     }
+  }
+  static showPrize() {
+    let prize;
+    const shopCard = document.querySelector(".dropdownBackground");
+    const shopItem = document.createElement("li");
+    prize = Stored.getPrize();
+    shopItem.innerText = "Mr Pizza is sad. Order pizza";
+
+    if (prize > 0) {
+      shopItem.innerText = "";
+      shopItem.innerText = `Prize: ${prize}`;
+    } else {
+      shopItem.innerText = "Mr Pizza is sad. Order pizza";
+    }
+    shopCard.appendChild(shopItem);
   }
 }
 
@@ -169,16 +172,12 @@ class Stored {
       Pizzas[i].amount = array[i];
     }
   }
-
+  z;
   // Sums prize, if shopcard is empty - return information
-  static getPrize(pizza) {
+  static getPrize() {
     let prize = [];
     let prizeItem;
     let reducedPrize;
-    const shopCard = document.querySelector(".dropdownBackground");
-    const shopItem = document.createElement("li");
-    shopItem.classList = "open";
-    shopItem.classList = "bag";
 
     const pizzas = Stored.getPizza();
     pizzas.forEach(pizza => {
@@ -189,12 +188,6 @@ class Stored {
         return a + b;
       });
     });
-    if (reducedPrize > 0) {
-      shopItem.innerText = `Prize: ${reducedPrize}$`;
-    } else {
-      shopItem.innerText = "Mr Pizza is sad. Order pizza";
-    }
-    shopCard.appendChild(shopItem);
     return reducedPrize;
   }
 }
@@ -203,6 +196,8 @@ document.addEventListener("DOMContentLoaded", UI.displayMenu);
 document.addEventListener("click", function() {
   Stored.ordered();
   UI.updateCard();
+  Stored.getPrize();
+  UI.showPrize();
 });
 document.querySelector(".menu--list").addEventListener("click", e => {
   if (e.target.tagName == "BUTTON") {
