@@ -1,8 +1,8 @@
 class Pizza {
-  constructor(name, amount, prize, ingredients, id) {
+  constructor(name, amount, price, ingredients, id) {
     this.name = name;
     this.amount = amount;
-    this.prize = prize;
+    this.price = price;
     this.ingredients = ingredients;
     this.id = id;
   }
@@ -12,14 +12,14 @@ const Pizzas = [
   {
     name: "Margarita",
     amount: "0",
-    prize: 24.99,
+    price: 24.99,
     ingredients: "basil, tomato saunce, cheese, mushroom",
     id: 0
   },
   {
     name: "Italiana",
     amount: "0",
-    prize: 24.99,
+    price: 24.99,
     ingredients:
       "basil, tomato saunce, cheese, mushroom, basil, tomato saunce, cheese",
     id: 1
@@ -27,14 +27,14 @@ const Pizzas = [
   {
     name: "Napoleoni",
     amount: "0",
-    prize: 29.99,
+    price: 29.99,
     ingredients: "basil, oregano, tomato, tomato saunce, cheese, mushroom",
     id: 2
   },
   {
     name: "4 Cheeses",
     amount: "0",
-    prize: 26.99,
+    price: 26.99,
     ingredients:
       "cheese, ementaler, gouda, tomato saunce, cheese, mushroom, basil, tomato saunce, cheese, mushroom",
     id: 3
@@ -42,7 +42,7 @@ const Pizzas = [
   {
     name: "Chineese",
     amount: "0",
-    prize: 34.99,
+    price: 34.99,
     ingredients:
       "fish, oregano, tomato, garlic saunce, chicken, mushroom, basil, tomato, saunce, cheese, shitake",
     id: 4
@@ -58,7 +58,7 @@ class UI {
     Stored.ordered(); //Load and update quantity of Pizza
 
     UI.createCard();
-    Stored.getPrize();
+    Stored.getprice();
   }
   // Create Menu from all dishes
   static addMenu(pizza) {
@@ -67,7 +67,7 @@ class UI {
     dish.classList = "dish";
     dish.innerHTML = `<div class="name bold">${pizza.name}</div>
         <div class="ingredients">Ingredients: ${pizza.ingredients}</div>
-        <div class="price">${pizza.prize}$</div>
+        <div class="price">${pizza.price}$</div>
         <button class="add">+</button>
         <span class="amount" id = "amount${pizza.id}">${pizza.amount}</span>
         <button class="substract">-</button>`;
@@ -83,7 +83,7 @@ class UI {
     shopItem.classList = `bag${pizza.id}`;
     shopItem.innerHTML = `
     <div class="name bold">${pizza.name}</div>
-    <div class="price">${pizza.prize}$</div>
+    <div class="price">${pizza.price}$</div>
     <span class="order--amount" id = "order--amount${pizza.id}">${
       pizza.amount
     }</span>
@@ -133,16 +133,16 @@ class UI {
       amountElement.innerText = 0;
     }
   }
-  static showPrize() {
-    let prize;
+  static showprice() {
+    let price;
     const shopCard = document.querySelector(".dropdownBackground");
     const shopItem = document.createElement("li");
-    prize = Stored.getPrize();
+    price = Stored.getprice();
     shopItem.innerText = "Mr Pizza is sad. Order pizza";
 
-    if (prize > 0) {
+    if (price > 0) {
       shopItem.innerText = "";
-      shopItem.innerText = `Prize: ${prize}`;
+      shopItem.innerText = `price: ${price}`;
     } else {
       shopItem.innerText = "Mr Pizza is sad. Order pizza";
     }
@@ -172,23 +172,22 @@ class Stored {
       Pizzas[i].amount = array[i];
     }
   }
-  z;
-  // Sums prize, if shopcard is empty - return information
-  static getPrize() {
-    let prize = [];
-    let prizeItem;
-    let reducedPrize;
+  // Sums price, if shopcard is empty - return information
+  static getprice() {
+    let price = [];
+    let priceItem;
+    let reducedprice;
 
     const pizzas = Stored.getPizza();
     pizzas.forEach(pizza => {
-      prizeItem = pizza.amount * pizza.prize;
-      prize.push(prizeItem);
+      priceItem = pizza.amount * pizza.price;
+      price.push(priceItem);
 
-      reducedPrize = prize.reduce(function(a, b) {
+      reducedprice = price.reduce(function(a, b) {
         return a + b;
       });
     });
-    return reducedPrize;
+    return reducedprice;
   }
 }
 
@@ -196,8 +195,8 @@ document.addEventListener("DOMContentLoaded", UI.displayMenu);
 document.addEventListener("click", function() {
   Stored.ordered();
   UI.updateCard();
-  Stored.getPrize();
-  UI.showPrize();
+  Stored.getprice();
+  UI.showprice();
 });
 document.querySelector(".menu--list").addEventListener("click", e => {
   if (e.target.tagName == "BUTTON") {
