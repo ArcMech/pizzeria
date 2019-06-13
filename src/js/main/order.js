@@ -46,10 +46,18 @@ const Pizzas = [
     ingredients:
       "fish, oregano, tomato, garlic saunce, chicken, mushroom, basil, tomato, saunce, cheese, shitake",
     id: 4
+  },
+  {
+    name: "Sea Food",
+    amount: "0",
+    price: 45.99,
+    ingredients:
+      "lobster, shrimps, tiger shrimps, tuna, fish, eel, lavender, sea salt, cheese",
+    id: 5
   }
 ];
 
-//Create UI
+//Create UI -> contains functions with interface and DOM manipulations
 
 class UI {
   static displayMenu() {
@@ -58,8 +66,8 @@ class UI {
     Stored.ordered(); //Load and update quantity of Pizza
 
     UI.createCard();
-    UI.createPrice(); //Load DOM element for price
     Stored.getPrice();
+    UI.createPrice(); //Load DOM element for price
   }
   // Create Menu from all dishes
   static addMenu(pizza) {
@@ -108,7 +116,7 @@ class UI {
     const quantities = document.querySelectorAll(".order--amount");
 
     for (let i = 0; i < quantities.length; i++) {
-      if (quantities[i].innerText !== pizzas[i].amount && !null) {
+      if (parseInt(quantities[i].innerText) !== parseInt(pizzas[i].amount)) {
         quantities[i].innerText = pizzas[i].amount;
       } else {
         continue;
@@ -116,23 +124,38 @@ class UI {
     }
   }
 
-  static addAmount(el) {
+  static updateMenu() {
+    const pizzas = Stored.getPizza();
+    const quantities = document.querySelectorAll(".amount");
+
+    for (let i = 0; i < quantities.length; i++) {
+      if (parseInt(quantities[i].innerText) !== parseInt(pizzas[i].amount)) {
+        quantities[i].innerText = pizzas[i].amount;
+      } else {
+        continue;
+      }
+    }
+  }
+
+  static amountCatch(e) {
     let amountElement, adjustAmount;
 
-    if (el.classList.contains("add")) {
+    if (e.classList.contains("add")) {
       adjustAmount = 1;
-      amountElement = el.nextElementSibling;
+      amountElement = e.nextElementSibling;
     } else {
       adjustAmount = -1;
-      amountElement = el.previousElementSibling;
+      amountElement = e.previousElementSibling;
     }
 
     if (amountElement.innerText >= 0) {
       amountElement.innerText =
         parseInt(amountElement.innerText) + adjustAmount;
     } else {
+      adjustAmount = -1;
       amountElement.innerText = 0;
     }
+    console.log(amountElement, adjustAmount);
   }
   static createPrice() {
     const shopCard = document.querySelector(".dropdownBackground");
@@ -149,11 +172,22 @@ class UI {
     if (price > 0) {
       priceItem.innerText = `Price: ${roundedPrice}`;
     } else {
-      priceItem.innerText = "Mr Pizza is sad. Order pizza";
+      priceItem.innerText = "Your box is empty";
+    }
+  }
+
+  static deleteCatch(e) {
+    let index = e.previousElementSibling.innerText;
+    let deleteButtons = document.querySelectorAll(".delete");
+    for (let i = 0; i < deleteButtons.length; i++) {
+      if (e.classList.contains(`delete${i}`)) {
+        Stored.deleteOrder(index, i);
+      }
     }
   }
 }
 
+// Stored contains data and its modifications.
 class Stored {
   static getPizza() {
     let pizzas;
@@ -163,6 +197,16 @@ class Stored {
       window.alert("There is something wrong... :(");
     }
     return pizzas;
+  }
+
+  static deleteOrder(index, element) {
+    let pizzas = this.getPizza();
+
+    if (index > 0) {
+      pizzas[element].amount = "0";
+    }
+
+    UI.updateCard();
   }
 
   static ordered() {
@@ -191,6 +235,7 @@ class Stored {
         return a + b;
       });
     });
+
     return reducedPrice;
   }
   // Unfortunately getPrice returns costs with long decimal number
@@ -202,14 +247,22 @@ class Stored {
 
 document.addEventListener("DOMContentLoaded", UI.displayMenu);
 document.addEventListener("click", function() {
-  Stored.ordered();
   UI.updateCard();
+  UI.updateMenu();
   Stored.getPrice();
   UI.showPrice();
 });
 document.querySelector(".menu--list").addEventListener("click", e => {
   if (e.target.tagName == "BUTTON") {
-    UI.addAmount(e.target);
+    UI.amountCatch(e.target);
+    Stored.ordered();
+  } else {
+    return 0;
+  }
+});
+document.querySelector(".dropdownBackground").addEventListener("click", e => {
+  if (e.target.tagName == "BUTTON") {
+    UI.deleteCatch(e.target);
   } else {
     return 0;
   }
