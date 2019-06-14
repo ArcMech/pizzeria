@@ -66,7 +66,7 @@ class UI {
     Stored.ordered(); //Load and update quantity of Pizza
 
     UI.createCard(); //Creates shopping card DOM
-    UI.hideCard();
+    UI.hideCard(); // Hides items with 0 amount
     Stored.getPrice(); //Sums price
     UI.createPrice(); //Load DOM element for price
     UI.showPrice(); // Shows price
@@ -116,7 +116,6 @@ class UI {
   // Hides shopping cards, which amount of order is 0
   static hideCard() {
     let pizzas = Stored.getPizza();
-    const button = document.querySelector(".orderButton");
     for (let i = 0; i < pizzas.length; i++) {
       let bagItem = document.querySelector(`.bag${i}`);
       if (pizzas[i].amount == 0) {

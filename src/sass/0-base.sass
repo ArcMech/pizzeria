@@ -76,8 +76,8 @@ a
   opacity: 0
   position: absolute
   overflow: hidden
-  top: -27px
-  padding: 50px
+  top: -20px
+  padding: 30px
   transition: all 0.3s
   transform: translateY(100px)
   will-change: transform
@@ -86,11 +86,10 @@ a
   
 
 .dropdownBackground 
-  width: 550px
-  min-height: 300px
+  width: 750px
+  min-height: 150px
   position: absolute
   background: #fff
-  transition: all 0.3s, opacity 0.4s, translate 0.1s
   transform-origin: 50% 0%
   justify-content: center
   opacity: 0
@@ -102,39 +101,66 @@ a
     cursor: default
     grid-template-columns: 50% 30% 10% 10%
     grid-template-areas: "name price order--amount delete"
+    align-items: center
     .name
         grid-area: name
-        font-size: 1em
+        font-size: 1.4em
    
     .price
         grid-area: price
-        font-size: 1em
+        font-size: 1.4em
         padding: 0 5px
+        display: flex
+        justify-content: flex-end
         
     .order--amount
         grid-area: order--amount
+        font-size: 1.4em
         padding: 0 5px
+        text-align: center
+        display: flex
+        justify-content: flex-end
         
     .delete
         grid-area: delete
-        width: 30px
-        height: 30px 
+        font-size: 30px
+        width: 40px
+        height: 40px
         border: 1px solid black
         cursor: pointer
+        margin-left: auto
+        margin-right: 0
+@include mediumScreen 
+  .dropdownBackground
+    width: 100%
+    padding: 3rem
+    li
+      padding-bottom: 2rem
+      .price
+        display: flex
+        justify-content: flex-end
+      .order--amount
+        margin-left: auto
+        margin-right: 0
+      .delete
+        display: flex
+        justify-content: center
+
 
 .priceContainer 
   display: inline-flex
   justify-content: space-between
-  align-items: baseline
+  align-items: center
   .priceItem
     display: flex
+    font-size: 2.4rem
 
   .orderButton
     display: flex
     height: 50px
     width: 120px
     border: none
-    font-size: 1rem
+    font-size: 1.6rem
     justify-content: center
     cursor: pointer
       
