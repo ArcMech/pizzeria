@@ -65,9 +65,13 @@ class UI {
     pizzas.forEach(pizza => UI.addMenu(pizza)); // Load all dishes from array
     Stored.ordered(); //Load and update quantity of Pizza
 
-    UI.createCard();
-    Stored.getPrice();
+    UI.createCard(); //Creates shopping card DOM
+    UI.hideCard();
+    Stored.getPrice(); //Sums price
     UI.createPrice(); //Load DOM element for price
+    UI.showPrice(); // Shows price
+    UI.createButton(); // Creates button for order
+    UI.updateButton(); // Changes color of button if there is some items in bag
   }
   // Create Menu from all dishes
   static addMenu(pizza) {
@@ -103,12 +107,48 @@ class UI {
 
   static createCard() {
     const pizzas = Stored.getPizza();
-
     pizzas.forEach(pizza => {
       if (pizza.amount) {
         UI.shopCard(pizza);
       }
     });
+  }
+  // Hides shopping cards, which amount of order is 0
+  static hideCard() {
+    let pizzas = Stored.getPizza();
+    const button = document.querySelector(".orderButton");
+    for (let i = 0; i < pizzas.length; i++) {
+      let bagItem = document.querySelector(`.bag${i}`);
+      if (pizzas[i].amount == 0) {
+        bagItem.classList.add("hidden");
+        bagItem.classList.remove("grid");
+      } else {
+        bagItem.classList.remove("hidden");
+        bagItem.classList.add("grid");
+      }
+    }
+  }
+
+  static createButton() {
+    const shopCard = document.querySelector(".dropdownBackground");
+    const priceContainer = document.querySelector(".priceContainer");
+    const button = document.createElement("button");
+    button.classList = "orderButton bold flex";
+    button.innerText = "ORDER";
+    shopCard.appendChild(priceContainer);
+    priceContainer.appendChild(button);
+  }
+
+  static updateButton() {
+    let price = Stored.getPrice();
+    let button = document.querySelector(".orderButton");
+    if (price == 0) {
+      button.classList.add("disabled");
+      button.classList.remove("primary-background");
+    } else {
+      button.classList.remove("disabled");
+      button.classList.add("primary-background");
+    }
   }
 
   static updateCard() {
@@ -155,13 +195,15 @@ class UI {
       adjustAmount = -1;
       amountElement.innerText = 0;
     }
-    console.log(amountElement, adjustAmount);
   }
   static createPrice() {
     const shopCard = document.querySelector(".dropdownBackground");
-    const priceItem = document.createElement("li");
+    const priceContainer = document.createElement("span");
+    const priceItem = document.createElement("span");
     priceItem.classList = "priceItem";
-    shopCard.appendChild(priceItem);
+    priceContainer.classList = "priceContainer";
+    shopCard.appendChild(priceContainer);
+    priceContainer.appendChild(priceItem);
   }
   static showPrice() {
     let price, roundedPrice;
@@ -170,9 +212,9 @@ class UI {
     roundedPrice = Stored.roundPrice(price, 2);
 
     if (price > 0) {
-      priceItem.innerText = `Price: ${roundedPrice}`;
+      priceItem.innerText = `Price: ${roundedPrice}$`;
     } else {
-      priceItem.innerText = "Your box is empty";
+      priceItem.innerText = "Your card is empty...";
     }
   }
 
@@ -248,7 +290,9 @@ class Stored {
 document.addEventListener("DOMContentLoaded", UI.displayMenu);
 document.addEventListener("click", function() {
   UI.updateCard();
+  UI.hideCard();
   UI.updateMenu();
+  UI.updateButton();
   Stored.getPrice();
   UI.showPrice();
 });

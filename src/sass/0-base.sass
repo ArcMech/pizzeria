@@ -63,21 +63,22 @@ a
   box-shadow: 0px 0px 58px -25px rgba(0,0,0,0.8)
   transition: 0.5s
 
-.nav__flex
+.flex
   display: flex
   justify-content: space-between
 
-.nav__hamburger
+.hidden
   display: none
-  justify-content: center
+.grid
+  display: grid
 
 .dropdown 
   opacity: 0
   position: absolute
   overflow: hidden
-  top: -28px
-  padding: 30px
-  transition: all 0.1s
+  top: -27px
+  padding: 50px
+  transition: all 0.3s
   transform: translateY(100px)
   will-change: transform
   display: none
@@ -85,64 +86,67 @@ a
   
 
 .dropdownBackground 
-  width: auto
+  width: 550px
   min-height: 300px
   position: absolute
   background: #fff
-  transition: all 0.1s, opacity 0.4s, translate 0.1s
+  transition: all 0.3s, opacity 0.4s, translate 0.1s
   transform-origin: 50% 0%
   justify-content: center
   opacity: 0
   flex-direction: column
   cursor: default
   li
-    padding: 10px
+    padding-bottom: 20px
     list-style: none
     cursor: default
-    display: grid
-    grid-template-columns: 1fr 0.1fr 0.1fr 0.2fr 
-    grid-template-rows: 2fr 
-    grid-template-areas: "name price amount delete"
+    grid-template-columns: 50% 30% 10% 10%
+    grid-template-areas: "name price order--amount delete"
     .name
         grid-area: name
         font-size: 1em
-        padding-right: 1em
-
-
+   
     .price
         grid-area: price
         font-size: 1em
-        padding: 0 1em
+        padding: 0 5px
         
-    button
-        height: 30px
-        font-size: 20px
-        border: 1px solid black
-      
-
-    .amount
-        grid-area: amount
-        padding: 0 20px
+    .order--amount
+        grid-area: order--amount
+        padding: 0 5px
+        
     .delete
         grid-area: delete
         width: 30px
-        height: 30px
-        
+        height: 30px 
+        border: 1px solid black
+        cursor: pointer
 
+.priceContainer 
+  display: inline-flex
+  justify-content: space-between
+  align-items: baseline
+  .priceItem
+    display: flex
 
+  .orderButton
+    display: flex
+    height: 50px
+    width: 120px
+    border: none
+    font-size: 1rem
+    justify-content: center
+    cursor: pointer
+      
 
 
 .open 
   opacity: 1
   
+.disabled
+  background: #f1f1f1
+  color: white
 
-
-.trigger-enter .dropdown 
-  display: flex
-  flex-direction: column
-
-
-.trigger-enter-active .dropdown 
-  opacity: 1
-
-
+.primary-background
+  background: $primary
+  
