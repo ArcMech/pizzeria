@@ -58,8 +58,6 @@ a
   position: fixed
   width: 100%
   z-index: 9999
-  border-bottom-left-radius: 30px
-  border-bottom-right-radius: 30px
   box-shadow: 0px 0px 58px -25px rgba(0,0,0,0.8)
   transition: 0.5s
 
@@ -76,7 +74,7 @@ a
   opacity: 0
   position: absolute
   overflow: hidden
-  top: -20px
+  top: -21px
   padding: 30px
   transition: all 0.3s
   transform: translateY(100px)
@@ -102,20 +100,19 @@ a
     grid-template-columns: 50% 30% 10% 10%
     grid-template-areas: "name price order--amount delete"
     align-items: center
+    font-size: 1.4rem
     .name
         grid-area: name
-        font-size: 1.4em
+        
    
     .price
         grid-area: price
-        font-size: 1.4em
         padding: 0 5px
         display: flex
         justify-content: flex-end
         
     .order--amount
         grid-area: order--amount
-        font-size: 1.4em
         padding: 0 5px
         text-align: center
         display: flex
@@ -133,9 +130,10 @@ a
 @include mediumScreen 
   .dropdownBackground
     width: 100%
-    padding: 3rem
+    padding: 2rem
     li
       padding-bottom: 2rem
+      font-size: 3rem
       .price
         display: flex
         justify-content: flex-end
@@ -145,6 +143,9 @@ a
       .delete
         display: flex
         justify-content: center
+        width: 60px
+        height: 60px
+
 
 
 .priceContainer 
@@ -153,7 +154,7 @@ a
   align-items: center
   .priceItem
     display: flex
-    font-size: 2.4rem
+    font-size: 2rem
 
   .orderButton
     display: flex
@@ -164,7 +165,9 @@ a
     justify-content: center
     cursor: pointer
       
-
+@include mediumScreen 
+  .priceItem
+    font-size: 2.4rem
 
 .open 
   opacity: 1
