@@ -141,7 +141,7 @@ a {
     padding: 2rem; }
     .dropdownBackground li {
       padding-bottom: 2rem;
-      font-size: 3rem; }
+      font-size: 1.8rem; }
       .dropdownBackground li .price {
         display: flex;
         justify-content: flex-end; }
@@ -159,13 +159,13 @@ a {
   align-items: center; }
   .priceContainer .priceItem {
     display: flex;
-    font-size: 2rem; }
+    font-size: 1.8rem; }
   .priceContainer .orderButton {
     display: flex;
     height: 50px;
     width: 120px;
     border: none;
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     justify-content: center;
     cursor: pointer; }
 
@@ -238,6 +238,8 @@ nav {
   font-size: 24px;
   text-transform: uppercase;
   text-align: center; }
+  .hero .hero--belt .column, .contact .hero--belt .column {
+    width: 25%; }
   .hero .hero--belt p, .contact .hero--belt p {
     margin: auto;
     padding: 10px;
