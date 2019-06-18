@@ -23,3 +23,5 @@
 # Ignore SASS cache #
 src/.sass-cache/
 
+# Ignore node modules#
+node_modules

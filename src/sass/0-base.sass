@@ -1,8 +1,8 @@
 /* VARIABLES */
-$primary: #FACE5E
-$secondary: #393e46
+$primary-color: #FACE5E
+$secondary-color: #393e46
 $firstBrake: 1150px
-$height: 600px
+
 /* SCROLL */
 /* width */
 ::-webkit-scrollbar
@@ -18,7 +18,7 @@ $height: 600px
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover
-  background: $primary
+  background: $primary-color
 
 
 /* Main tags */
@@ -28,8 +28,13 @@ body
   background-color: #f7f7f7
   transition: 0.3s
 
+section
+  padding: 40px
+  width: 100%
+
 h1
   font-size: 48px
+  text-align: center
 
 h2 
   font-size: 36px
@@ -69,6 +74,8 @@ a
   display: none
 .grid
   display: grid
+
+/* Nav menu */
 
 .dropdown 
   opacity: 0
@@ -128,6 +135,8 @@ a
         margin-left: auto
         margin-right: 0
 @include mediumScreen 
+  .dropdown
+    top: -15px
   .dropdownBackground
     width: 100%
     padding: 2rem
@@ -167,7 +176,7 @@ a
       
 @include mediumScreen 
   .priceItem
-    font-size: 2.4rem
+    font-size: 2rem
 
 .open 
   opacity: 1
@@ -177,5 +186,5 @@ a
   color: white
 
 .primary-background
-  background: $primary
+  background: $primary-color
   
