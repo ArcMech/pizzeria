@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="src/css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:100,200,600"
+      rel="stylesheet"
+    />
+
+    <title>Form</title>
+  </head>
+  <body>
+    <section class="ordering">
+      <h1>Your order</h1>
+      <form id="hey">
+        <ul>
+          <li class="item">
+            <h3 class="name">1. Margarita</h3>
+            <button class="button-delete">X</button>
+            <div class="button-wrapper">
+              <button class="button-size s">S</button>
+              <button class="button-size m">M</button>
+              <button class="button-size l">L</button>
+            </div>
+          </li>
+          <div class="dropdown-toppings">
+          <button class="button-slider off">Extra toppings ↓</button>
+        </ul>
+        <div class="button-wrap">
+          <button class="button-order">←</button
+          ><button class="button-order" type="button" onclick="printChecked()">
+            Next step
+          </button>
+        </div>
+      </form>
+    </section>
+  </body>
+
+  <script type="text/javascript">
+    const Toppings = [
+      {
+        name: "shrimps",
+        price: 1
+      },
+      {
+        name: "tomatoes",
+        price: 1
+      },
+      {
+        name: "beef",
+        price: 3
+      },
+      {
+        name: "pork",
+        price: 2
+      },
+      {
+        name: "chicken",
+        price: 2
+      },
+      {
+        name: "shrimps",
+        price: 1
+      },
+      {
+        name: "tomatoes",
+        price: 1
+      },
+      {
+        name: "beef",
+        price: 3
+      },
+      {
+        name: "pork",
+        price: 2
+      },
+      {
+        name: "shrimps",
+        price: 1
+      },
+      {
+        name: "tomatoes",
+        price: 1
+      },
+      {
+        name: "beef",
+        price: 3
+      },
+      {
+        name: "pork",
+        price: 2
+      },
+      {
+        name: "shrimps",
+        price: 1
+      },
+      {
+        name: "tomatoes",
+        price: 1
+      },
+      {
+        name: "beef",
+        price: 3
+      }
+    ];
+
+    class TransactionUI {
+      //
+      static displayToppings() {
+        Toppings.forEach(topping => {
+          TransactionUI.addToppings(topping);
+        });
+      }
+
+      static addToppings(topping) {
+        const toppingContainer = document.querySelector(".dropdown-toppings");
+        const checkbox = document.createElement("div");
+        checkbox.innerHTML = `
+      <input type="checkbox" name="acs" value="${topping.name}" />
+      <label for="${topping.name}">${topping.name}</label>
+    `;
+        toppingContainer.appendChild(checkbox)
+      }
+      static printChecked() {
+      var items = document.getElementsByName("acs");
+      var selectedItems = "";
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].type == "checkbox" && items[i].checked == true)
+          selectedItems += items[i].value + "\n";
+      }
+      console.log(selectedItems);
+    }
+    }
+
+
+
+
+    document.addEventListener("DOMContentLoaded", TransactionUI.displayToppings);
+    document.addEventListener("click", TransactionUI.printChecked)
+  </script>
+</html>

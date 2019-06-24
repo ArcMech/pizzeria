@@ -1,9 +1,10 @@
 class Pizza {
-  constructor(name, amount, price, ingredients, id) {
+  constructor(name, amount, price, ingredients, size, id) {
     this.name = name;
     this.amount = amount;
     this.price = price;
     this.ingredients = ingredients;
+    this.size = size;
     this.id = id;
   }
 }
@@ -14,6 +15,7 @@ const Pizzas = [
     amount: "0",
     price: 24.99,
     ingredients: "basil, tomato saunce, cheese, mushroom",
+    size: ["S", "M", "L"],
     id: 0
   },
   {
@@ -22,6 +24,7 @@ const Pizzas = [
     price: 24.99,
     ingredients:
       "basil, tomato saunce, cheese, mushroom, basil, tomato saunce, cheese",
+    size: ["S", "M", "L"],
     id: 1
   },
   {
@@ -29,6 +32,7 @@ const Pizzas = [
     amount: "0",
     price: 29.99,
     ingredients: "basil, oregano, tomato, tomato saunce, cheese, mushroom",
+    size: ["S", "M", "L"],
     id: 2
   },
   {
@@ -37,6 +41,7 @@ const Pizzas = [
     price: 26.99,
     ingredients:
       "cheese, ementaler, gouda, tomato saunce, cheese, mushroom, basil, tomato saunce, cheese, mushroom",
+    size: ["S", "M", "L"],
     id: 3
   },
   {
@@ -45,6 +50,7 @@ const Pizzas = [
     price: 34.99,
     ingredients:
       "fish, oregano, tomato, garlic saunce, chicken, mushroom, basil, tomato, saunce, cheese, shitake",
+    size: ["S", "M", "L"],
     id: 4
   },
   {
@@ -53,6 +59,7 @@ const Pizzas = [
     price: 45.99,
     ingredients:
       "lobster, shrimps, tiger shrimps, tuna, fish, eel, lavender, sea salt, cheese",
+    size: ["S", "M", "L"],
     id: 5
   }
 ];
@@ -81,9 +88,9 @@ class UI {
     dish.innerHTML = `<div class="name bold">${pizza.name}</div>
         <div class="ingredients">Ingredients: ${pizza.ingredients}</div>
         <div class="price">${pizza.price}$</div>
-        <button class="add">+</button>
+        <button class="add" name = "amount">+</button>
         <span class="amount" id = "amount${pizza.id}">${pizza.amount}</span>
-        <button class="substract">-</button>`;
+        <button class="substract" name = "amount">-</button>`;
 
     dishParent.appendChild(dish);
   }
@@ -131,9 +138,13 @@ class UI {
   static createButton() {
     const shopCard = document.querySelector(".dropdownBackground");
     const priceContainer = document.querySelector(".priceContainer");
-    const button = document.createElement("button");
-    button.classList = "orderButton bold flex";
-    button.innerText = "ORDER";
+    const button = document.createElement("form");
+    const input = document.createElement("input");
+    input.type = "submit";
+    input.value = "ORDER";
+    input.classList = "orderButton bold flex";
+    input.formAction = "/ordered.html";
+    button.appendChild(input);
     shopCard.appendChild(priceContainer);
     priceContainer.appendChild(button);
   }
@@ -296,9 +307,10 @@ document.addEventListener("click", function() {
   UI.showPrice();
 });
 document.querySelector(".menu--list").addEventListener("click", e => {
-  if (e.target.tagName == "BUTTON") {
+  if (e.target.name == "amount") {
     UI.amountCatch(e.target);
     Stored.ordered();
+    console.log(e.target);
   } else {
     return 0;
   }

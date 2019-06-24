@@ -25,9 +25,9 @@
 
         .dish
             display: grid
-            grid-template-columns: 200px 1.0fr 0.1fr 0.1fr 0.1fr 0.1fr 
+            grid-template-columns: 200px 1.0fr 0.1fr auto 0.1fr 0.1fr 0.1fr 
             grid-template-rows: 2fr 
-            grid-template-areas: "name ingredients price add amount substract"
+            grid-template-areas: "name ingredients price buttons add amount substract"
             font-size: 1.6rem
             .name
                 grid-area: name
@@ -42,11 +42,10 @@
                 grid-area: price
                 padding: 0 1rem
 
-            button
-                height: 3rem
-                border: 1px solid black
-                font-size: 2rem
-                cursor: pointer
+            .button-wrapper
+                grid-area: buttons
+                
+
             .add
                 grid-area: add
 
@@ -54,6 +53,8 @@
                 grid-area: amount
             .substract
                 grid-area: substract
+
+
 
     img
         width: 60%
