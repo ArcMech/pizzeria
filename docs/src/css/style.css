@@ -1,0 +1,83 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+section {
+  padding: 40px;
+  width: 100%;
+}
+
+h1 {
+  font-size: 48px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 36px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.light {
+  font-weight: 200;
+}
+
+.thin {
+  font-weight: 100;
+}
+
+.padding-to-bottom {
+  padding-bottom: 30px;
+}
+
+body {
+  font-family: Montserrat;
+  background-color: #f7f7f7;
+}
+
+.hero--belt {
+  min-height: 230px;
+  width: 100%;
+  margin-top: -15px;
+  padding: 60px;
+  display: inline-flex;
+  justify-content: space-around;
+  font-size: 24px;
+  text-transform: uppercase;
+  text-align: center;
+  background: #face5e;
+}
+.hero--belt p {
+  margin: auto;
+  padding: 10px;
+  display: block;
+  justify-content: space-around;
+  font-size: 24px;
+  text-align: center;
+}
+@media screen and (max-width: 900px) {
+  .hero--belt .hero--belt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+  }
+  .hero--belt .hero--belt .column {
+    margin: auto;
+  }
+  .hero--belt .hero--belt .column p {
+    display: inline-flex;
+  }
+}
+
+/*# sourceMappingURL=style.css.map */
