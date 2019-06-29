@@ -26,7 +26,6 @@ $firstBrake: 1150px
 body
   font-family: Montserrat
   background-color: #f7f7f7
-  transition: 0.3s
 
 section
   padding: 40px
@@ -52,6 +51,9 @@ a
 .thin
   font-weight: 100
 
+.padding-to-bottom
+  padding-bottom: 30px
+
 #gmap_canvas img 
   width: 100% !important
   background: none !important
@@ -62,7 +64,7 @@ a
 .fixed
   position: fixed
   width: 100%
-  z-index: 9999
+  z-index: 999
   box-shadow: 0px 0px 58px -25px rgba(0,0,0,0.8)
   transition: 0.5s
 
@@ -109,31 +111,37 @@ a
     align-items: center
     font-size: 1.4rem
     .name
-        grid-area: name
+      grid-area: name
         
    
     .price
-        grid-area: price
-        padding: 0 5px
-        display: flex
-        justify-content: flex-end
+      grid-area: price
+      padding: 0 5px
+      display: flex
+      justify-content: flex-end
         
     .order--amount
-        grid-area: order--amount
-        padding: 0 5px
-        text-align: center
-        display: flex
-        justify-content: flex-end
+      grid-area: order--amount
+      padding: 0 5px
+      text-align: center
+      display: flex
+      justify-content: flex-end
         
     .delete
-        grid-area: delete
-        font-size: 30px
-        width: 40px
-        height: 40px
-        border: 1px solid black
-        cursor: pointer
-        margin-left: auto
-        margin-right: 0
+      grid-area: delete
+      border: none
+      background: rgba(255,0,0,0.8)
+      opacity: 0.7
+      border-radius: 50%
+      font-size: 1rem
+      width: 40px
+      height: 40px
+      cursor: pointer
+      margin-left: auto
+      margin-right: 0
+
+    .delete:hover
+      background: rgba(255,0,0,1)
 @include mediumScreen 
   .dropdown
     top: -15px

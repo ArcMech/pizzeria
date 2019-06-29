@@ -6,6 +6,7 @@
   <meta charset="utf-8">
   <title>Pizza.com the best pizza in your city!</title>
   <meta name="Pizza.com">
+  <link rel="shortcut icon" href="src/img/favicon.ico" />
   <link rel="stylesheet" href="src/css/style.css">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,600" rel="stylesheet">
 </head>
@@ -14,7 +15,7 @@
   <nav>
     <div class="wrapper flex">
       <img class="logo" src="src/img/logo.svg"></img>
-      <ul class = "menu__full">
+      <ul class = "menu__full bold">
         <li><a href="#offert">Menu</a></li>
         <li><a href="#services">About us</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -25,6 +26,33 @@
       </ul>
     </div>
   </nav>
+  <div class="form-popup" id="myForm">
+    <form action="/ordered.html" class="form-container">
+      <h2 class = "light padding-to-bottom">Your delivery</h2>
+
+      <label for="name"><b>Name</b></label>
+      <input type="text"  placeholder="Your name" id = "name"  required />
+
+      <label for="address"><b>Address</b></label>
+      <input
+        type="text"
+        placeholder="Your address"
+        id = "address"
+        required
+      />
+      <label for="email"><b>Email</b></label>
+      <input type="text" placeholder="Your email" id = "email" required />
+
+      <label for="phone number"><b>Phone number</b></label>
+      <input type="text" placeholder="Your phone number" id = "phone" required />
+      <h2 class = "light padding-to-bottom">Your order</h2>
+      <div class="orderForm"></div>
+      <button type="submit" class="btn bold submit">ORDER!</button>
+      <button type="button" class="btn cancel bold">
+        Cancel
+      </button>
+    </form>
+  </div>
   <section class="hero" id ="hero">
     <div class="parallax" style="background: url('src/img/pizza1.jpg');">
       <h1 class="bold whiteFont">A little piece of pizza</h1>

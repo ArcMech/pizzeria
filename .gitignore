@@ -25,3 +25,6 @@ src/.sass-cache/
 
 # Ignore node modules#
 node_modules
+
+# Ignore style.css.map
+src/css/style.css.map

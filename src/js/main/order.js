@@ -1,10 +1,9 @@
 class Pizza {
-  constructor(name, amount, price, ingredients, size, id) {
+  constructor(name, amount, price, ingredients, id) {
     this.name = name;
     this.amount = amount;
     this.price = price;
     this.ingredients = ingredients;
-    this.size = size;
     this.id = id;
   }
 }
@@ -15,7 +14,6 @@ const Pizzas = [
     amount: "0",
     price: 24.99,
     ingredients: "basil, tomato saunce, cheese, mushroom",
-    size: ["S", "M", "L"],
     id: 0
   },
   {
@@ -24,7 +22,6 @@ const Pizzas = [
     price: 24.99,
     ingredients:
       "basil, tomato saunce, cheese, mushroom, basil, tomato saunce, cheese",
-    size: ["S", "M", "L"],
     id: 1
   },
   {
@@ -32,7 +29,6 @@ const Pizzas = [
     amount: "0",
     price: 29.99,
     ingredients: "basil, oregano, tomato, tomato saunce, cheese, mushroom",
-    size: ["S", "M", "L"],
     id: 2
   },
   {
@@ -41,7 +37,6 @@ const Pizzas = [
     price: 26.99,
     ingredients:
       "cheese, ementaler, gouda, tomato saunce, cheese, mushroom, basil, tomato saunce, cheese, mushroom",
-    size: ["S", "M", "L"],
     id: 3
   },
   {
@@ -50,7 +45,6 @@ const Pizzas = [
     price: 34.99,
     ingredients:
       "fish, oregano, tomato, garlic saunce, chicken, mushroom, basil, tomato, saunce, cheese, shitake",
-    size: ["S", "M", "L"],
     id: 4
   },
   {
@@ -59,7 +53,6 @@ const Pizzas = [
     price: 45.99,
     ingredients:
       "lobster, shrimps, tiger shrimps, tuna, fish, eel, lavender, sea salt, cheese",
-    size: ["S", "M", "L"],
     id: 5
   }
 ];
@@ -69,7 +62,9 @@ const Pizzas = [
 class UI {
   static displayMenu() {
     const pizzas = Stored.getPizza(); // Load Pizza Array
-    pizzas.forEach(pizza => UI.addMenu(pizza)); // Load all dishes from array
+    pizzas.forEach(pizza => {
+      UI.addMenu(pizza);
+    }); // Load all dishes from array
     Stored.ordered(); //Load and update quantity of Pizza
 
     UI.createCard(); //Creates shopping card DOM
@@ -107,7 +102,7 @@ class UI {
     <span class="order--amount" id = "order--amount${pizza.id}">${
       pizza.amount
     }</span>
-    <button class="delete delete${pizza.id}">X</button>
+    <button class="delete delete${pizza.id}">x</button>
     `;
     shopCard.appendChild(shopItem);
   }
@@ -138,13 +133,9 @@ class UI {
   static createButton() {
     const shopCard = document.querySelector(".dropdownBackground");
     const priceContainer = document.querySelector(".priceContainer");
-    const button = document.createElement("form");
-    const input = document.createElement("input");
-    input.type = "submit";
-    input.value = "ORDER";
-    input.classList = "orderButton bold flex";
-    input.formAction = "/ordered.html";
-    button.appendChild(input);
+    const button = document.createElement("button");
+    button.innerText = "ORDER";
+    button.classList = "orderButton bold flex open-button";
     shopCard.appendChild(priceContainer);
     priceContainer.appendChild(button);
   }
@@ -154,9 +145,11 @@ class UI {
     let button = document.querySelector(".orderButton");
     if (price == 0) {
       button.classList.add("disabled");
+      button.disabled = true;
       button.classList.remove("primary-background");
     } else {
       button.classList.remove("disabled");
+      button.disabled = false;
       button.classList.add("primary-background");
     }
   }
@@ -193,9 +186,14 @@ class UI {
     if (e.classList.contains("add")) {
       adjustAmount = 1;
       amountElement = e.nextElementSibling;
-    } else {
+    } else if (
+      e.classList.contains("substract") &&
+      e.previousElementSibling.innerText > 0
+    ) {
       adjustAmount = -1;
       amountElement = e.previousElementSibling;
+    } else {
+      return 0;
     }
 
     if (amountElement.innerText >= 0) {
@@ -236,6 +234,41 @@ class UI {
         Stored.deleteOrder(index, i);
       }
     }
+  }
+  static createForm(pizza) {
+    let orderForm = document.querySelector(".orderForm");
+    let listItem = document.createElement("li");
+    listItem.classList = "form-grid";
+    if (pizza.amount > 0) {
+      listItem.innerHTML = `
+    <div class="name bold">${pizza.name}</div>
+    <div class="price">${pizza.price}$</div>
+    <div class = "orderedAmount">Amount: ${
+      pizza.amount
+    }</div class = "amountOrder">
+    `;
+      orderForm.appendChild(listItem);
+    }
+  }
+
+  static openForm() {
+    let overallPrice = Stored.roundPrice(Stored.getPrice(), 2);
+    const orderForm = document.querySelector(".orderForm");
+    const priceItem = document.createElement("h2");
+    priceItem.style.paddingBottom = "40px";
+    priceItem.style.textAlign = "right";
+    let pizzas = Stored.getPizza();
+    myForm = document.getElementById("myForm");
+    myForm.style.display = "flex";
+    pizzas.forEach(pizza => UI.createForm(pizza));
+    priceItem.innerText = `Sum: ${overallPrice}$`;
+    orderForm.appendChild(priceItem);
+  }
+  static closeForm() {
+    const myForm = document.getElementById("myForm");
+    var orderForm = myForm.querySelector(".orderForm");
+    orderForm.innerHTML = "";
+    myForm.style.display = "none";
   }
 }
 
@@ -295,6 +328,35 @@ class Stored {
     let cost = Math.pow(10, decimals);
     return Math.round(price * cost) / cost;
   }
+
+  static getData() {
+    class ArrayOfData {
+      constructor(name, address, email, phone, order, price) {
+        this.name = name;
+        this.address = address;
+        this.email = email;
+        this.phone = phone;
+        this.order = order;
+        this.price = price;
+      }
+    }
+    let yourName = document.getElementById("name").value;
+    let yourAddress = document.getElementById("address").value;
+    let yourEmail = document.getElementById("email").value;
+    let yourNumber = document.getElementById("phone").value;
+    let yourPrice = Stored.roundPrice(Stored.getPrice(), 2);
+    let yourOrder = Stored.getPizza();
+
+    customerData = new ArrayOfData(
+      yourName,
+      yourAddress,
+      yourEmail,
+      yourNumber,
+      yourOrder,
+      yourPrice
+    );
+    localStorage.setItem("customerData", JSON.stringify({ customerData }));
+  }
 }
 
 document.addEventListener("DOMContentLoaded", UI.displayMenu);
@@ -310,20 +372,22 @@ document.querySelector(".menu--list").addEventListener("click", e => {
   if (e.target.name == "amount") {
     UI.amountCatch(e.target);
     Stored.ordered();
-    console.log(e.target);
-  } else {
-    return 0;
   }
 });
 document.querySelector(".dropdownBackground").addEventListener("click", e => {
-  if (e.target.tagName == "BUTTON") {
+  if (e.target.classList.contains("delete")) {
     UI.deleteCatch(e.target);
+  } else if (e.target.classList.contains("open-button")) {
+    UI.openForm();
   } else {
-    return 0;
+    UI.closeForm();
   }
 });
+document.querySelector(".cancel").addEventListener("click", UI.closeForm);
+document.querySelector(".submit").addEventListener("click", Stored.getData);
+
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener("click", function(e) {
+  anchor.addEventListener("click", { passive: true }, function(e) {
     e.preventDefault();
 
     document.querySelector(this.getAttribute("href")).scrollIntoView({
